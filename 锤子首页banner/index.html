@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>锤子</title>
+	<style type="text/css">
+		body {
+			margin:0;
+			background:#ccc;
+		}
+		#box {
+			width:1000px;
+			margin:30px auto;
+			perspective: 800px;
+			transform-style:preserve-3d;
+			transform-origin: 50% 50%;
+			
+
+		}
+		#imgbox {
+			width:1000px;
+			height:600px;
+			border-radius:20px;
+			overflow: hidden;
+		}
+		img	{
+			width:1000px;
+			height:600px;
+			-transform:rotateY(10deg);
+			-transition:all .1s;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<div id="imgbox">
+			<img id="img" src="./1.jpg">
+		</div>
+	</div>
+	<script>
+		let imgW = 1/2*img.offsetWidth;
+		let imgH = 1/2*img.offsetHeight;
+
+		imgbox.onmousemove = function(ev){
+			imgbox.style.transition = '0s'
+			let mX = ev.clientX - box.offsetLeft;
+			let mY = ev.clientY - box.offsetTop;
+
+			let rounX = (imgW - mX)/imgW;//x轴 左边：正  右边：负
+			let rounY = (imgH - mY)/imgH;//y轴 上边：正  下边：负
+
+			imgbox.style.transform = `rotateY(${-rounX*10}deg) rotateX(${rounY*10}deg)`
+		}
+		imgbox.onmouseout = function(){
+			imgbox.style.transition = '0.2s'
+			imgbox.style.transform = `rotateY(0deg) rotateX(0deg)`
+		}
+	</script>
+</body>
+</html>
