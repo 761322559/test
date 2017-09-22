@@ -28,8 +28,15 @@
               </div>
             </li>
             <!--active-->
-            <li class="nav-cart active">
-              <shop-car></shop-car>
+            <li 
+              :class="[{active:enterStatus},'nav-cart']" 
+              @mouseover="changeEnterStatus"
+              @mouseout="changeOutStatus"
+            >
+                <transition name="fade">
+                    <shop-car @mouseover="changeEnterStatus" @mouseout="changeOutStatus"></shop-car>
+                </transition>
+              
             </li>
           </ul>
           <ul class="nav-list">
@@ -65,10 +72,50 @@
 
 <script>
 import shopCar from '@/components/shop-car'
+
 export default {
-  components:{
-    shopCar
-  }
+    data(){
+        return {
+            enterStatus:false,
+            timer:null
+        }
+    },
+    components:{
+        shopCar
+    },
+    methods:{
+        changeEnterStatus(){//鼠标移入
+            if(this.timer){
+                clearTimeout(this.timer)
+            }
+            return this.enterStatus = true
+        },
+        changeOutStatus(){//鼠标移出
+            this.timer = setTimeout(()=>{
+                return this.enterStatus = false
+            },200)
+        }
+    }
 }
 </script>
+
+<style>
+    .fade-enter-active {
+      animation: bounce-in .5s;
+    }
+    .fade-leave-active {
+      animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+</style>
 

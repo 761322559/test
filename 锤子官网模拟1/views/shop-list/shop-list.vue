@@ -38,11 +38,18 @@ export default {
         shopListItem
     },
     mounted(){
+        //上来就请求列表数据
         Axios.get('http://localhost:3100/api/list')
         .then((data)=>{
             this.shopListItemData = data.data.list
         })
         .catch((data)=>{
+        })
+
+        //请求购物车数据
+        Axios.get('http://localhost:3100/api/getShopCarList')
+        .then((data)=>{
+            this.$store.commit('editGoodsList',data.data)
         })
     }
 

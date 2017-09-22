@@ -251,7 +251,7 @@
   background-size: 240px 107px;
 }
 
-.nav-cart:hover>a:before {
+.nav-cart:hover>div>a:before {
   background-position: 0 -22px;
 }
 

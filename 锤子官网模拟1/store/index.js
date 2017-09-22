@@ -10,6 +10,7 @@ let store = new Vuex.Store({
 	},
 	mutations:{
 		editGoodsList(sta,data){
+			console.log(data)
 			sta.goodsList = data.car_list//返回的是购物车里的所有信息
 		}
 	}

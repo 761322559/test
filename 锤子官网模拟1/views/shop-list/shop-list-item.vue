@@ -74,7 +74,6 @@ export default {
 				{carList:JSON.stringify(this.eachDataStitle)}//发送的数据是该商品的所有信息
 			)
 			.then((data)=>{
-				console.log(data)
 				this.$store.commit('editGoodsList',data.data)
 			})
 		}
