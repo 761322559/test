@@ -1,0 +1,105 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<title>瀑布流布局</title> 
+<style type="text/css"> 
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+#flow-box{
+    margin:0 auto;
+    padding:0; 
+    position:relative;
+    width: 500px;
+  
+   
+ } 
+#flow-box li{ 
+    width:190px; 
+    position:absolute; 
+    padding:10px; 
+    border:solid 1px #efefef; 
+    list-style:none; 
+}
+#flow-box li img{
+    width:100%;
+} 
+
+</style> 
+</head> 
+<body> 
+<ul id="flow-box"> 
+    <li><img src="./images/1.png"/></li> 
+    <li><img src="./images/2.png"/></li> 
+    <li><img src="./images/3.png"/></li> 
+    <li><img src="./images/4.png"/></li> 
+    <li><img src="./images/5.png"/></li> 
+    <li><img src="./images/6.png"/></li> 
+    <li><img src="./images/7.png"/></li> 
+    <li><img src="./images/8.png"/></li> 
+    <li><img src="./images/9.png"/></li> 
+     <li><img src="./images/5.png"/></li> 
+    <li><img src="./images/6.png"/></li> 
+    <li><img src="./images/7.png"/></li> 
+     <li><img src="./images/5.png"/></li> 
+    <li><img src="./images/6.png"/></li> 
+    <li><img src="./images/7.png"/></li> 
+     <li><img src="./images/2.png"/></li> 
+    <li><img src="./images/3.png"/></li> 
+    <li><img src="./images/4.png"/></li> 
+</ul> 
+
+<script>
+    let box=document.getElementById("flow-box");
+    window.onload =function(){  //图片加载完成以后再计算图片的高度
+      function fn(){
+        let liAll =document.getElementsByTagName("li");       
+        let hArr =[]
+        let n=0
+        for(var j=0;j<4;j++){ //因为宽度/每个li的宽度，取整为4  所以先放前4张图片
+            liAll[j].style.left= liAll[j].offsetWidth*j+"px";  //每张图片的left值就为宽度*张数；
+            hArr.push(liAll[j].offsetHeight) //将每列的高度放入新数组中；
+        }; 
+        console.log(hArr)  
+        for(var z=4;z<liAll.length;z++){      //因为第一排是4张，开始从第五张循环
+                for(let y =0;y<hArr.length;y++){ //循环hArr数组 获取每列高度最小的那一列的，列数；
+                    if(hArr[y] ==Math.min(...hArr)){  
+                        n=y  
+                    }
+                }  
+                liAll[z].style.top = Math.min(...hArr)+"px"   //每张图都是放在高度最小的那一列的下面
+
+                hArr[n]= Math.min(...hArr)+ liAll[z].offsetHeight;   //放好图片更新每一列的高度
+            
+                liAll[z].style.left=liAll[n].offsetWidth*n+"px";    //每张图的left都为高度最小的列的那个left
+        }
+      }
+     fn()
+      
+       
+    let imgArr =["./images/1.png","./images/2.png","./images/3.png","./images/4.png","./images/5.png","./images/6.png","./images/7.png"]
+    console.log(liAll[liAll.length-4])
+    window.onscroll =function(){
+        
+        let n=Math.floor(Math.random()*7);
+        
+        let liAll =document.getElementsByTagName("li"); 
+
+            if(liAll[liAll.length-4].getBoundingClientRect().bottom < document.documentElement.clientHeight){
+                let newImg =document.createElement("img")
+                newImg.src=`./images/${n+1}.png`
+                let newLi =document.createElement("li")
+                newLi.appendChild(newImg);
+                box.appendChild(newLi)
+                fn()
+            }   
+       }
+    }
+    
+        
+</script>
+</body> 
+</html>

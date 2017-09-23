@@ -1,0 +1,76 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<title>瀑布流布局</title> 
+<style type="text/css"> 
+body{margin:0; font-family:微软雅黑;} 
+#flow-box{
+    margin:10px auto 0 auto;
+    padding:0; 
+    position:relative;
+    width: 1000px;   
+ } 
+#flow-box li{ 
+    width:190px; 
+    position:absolute; 
+    padding:10px; 
+    border:solid 1px #efefef; 
+    list-style:none; 
+}
+#flow-box li img{
+    width:100%;
+} 
+
+</style> 
+</head> 
+<body> 
+<ul id="flow-box"> 
+    <li><img src="./images/1.png"/></li> 
+    <li><img src="./images/2.png"/></li> 
+    <li><img src="./images/3.png"/></li> 
+    <li><img src="./images/4.png"/></li> 
+    <li><img src="./images/5.png"/></li> 
+    <li><img src="./images/6.png"/></li> 
+    <li><img src="./images/7.png"/></li> 
+    <li><img src="./images/8.png"/></li> 
+    <li><img src="./images/9.png"/></li> 
+    <li><img src="./images/10.png"/></li> 
+    <li><img src="./images/11.png"/></li> 
+    <li><img src="./images/12.png"/></li> 
+    <li><img src="./images/13.png"/></li> 
+    </ul> 
+
+<script>
+    window.onload =function(){  //图片加载完成以后再计算图片的高度
+        let liAll =document.getElementsByTagName("li"); 
+        let box= document.getElementById("flow-box");
+
+        let lie =Math.floor(box.offsetWidth/liAll[0].offsetWidth);
+        let hArr =[]   
+        for(let i=0;i<lie;i++){
+            hArr.push(0)
+        }       
+        let n=0
+      
+        for(var z=0;z<liAll.length;z++){      //因为第一排是4张，开始从第五张循环
+                for(let y =0;y<hArr.length;y++){ //循环hArr数组 获取每列高度最小的那一列的，列数；
+                    if(hArr[y] ==Math.min(...hArr)){  
+                        n=y  
+                        break;
+                    }
+                }  
+                liAll[z].style.top = Math.min(...hArr)+"px"   //每张图都是放在高度最小的那一列的下面
+                hArr[n]= Math.min(...hArr)+ liAll[z].offsetHeight;   //放好图片更新每一列的高度
+            
+                liAll[z].style.left=liAll[n].offsetWidth*n+"px";    //每张图的left都为高度最小的列的那个left
+            
+            
+        }
+      
+    }
+    
+    
+</script>
+</body> 
+</html>
