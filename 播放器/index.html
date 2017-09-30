@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>music</title>
+	<link rel="stylesheet" type="text/css" href="./css/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="./css/index.css">	
+	<script src="./js/utils.js"></script>
+</head>
+<body>
+	<!-- <audio src="./music/1.mp3" controls=""></autio> -->
+	<div id="box">
+		<p class="songtitle"></p>
+		<div class="screen">
+			<i class="iconfont icon-music"></i>
+			<div class="progress">
+				<div class="time">1:60</div>
+				<div class="bar"></div>
+			</div>
+		</div>
+		<div class="btns">
+			<i class="prev iconfont icon-shangyishou"></i>
+			<i class="play iconfont icon-bofang"></i>
+			<i class="pause iconfont icon-pause"></i>
+			<i class="next iconfont icon-xiayishou"></i>
+		</div>
+		<div id="track">
+			<b class="item"></b>
+		</div>
+	</div>
+	<script>
+		//元素居中
+		function _center(dom){
+		    dom.style.position = 'absolute';
+		    dom.style.top = '50%';
+		    dom.style.left = '50%';
+		    dom.style['margin-top'] = - dom.offsetHeight / 2 + 'px';
+		    dom.style['margin-left'] = - dom.offsetWidth / 2 + 'px';
+		}
+		//定义音乐类
+		class Music {
+			constructor() {
+				this.musicDom = null
+				this.songs=[]
+				this.index=0
+			}
+			//生成一个audio标签
+			init(){
+				this.musicDom = document.createElement('audio')
+			}
+			//添加音乐
+			add(src){
+				this.songs.push(src)
+			}
+			//播放指定音乐
+			mPlay(){
+				this.musicDom.src = this.songs[this.index]
+				this.musicDom.play()
+			}
+			//暂停
+			mPause(){
+				this.musicDom.pause()
+			}
+			//下一首
+			mNext(){
+				this.index++
+				let len = this.songs.length
+				if(this.index >= len){
+					this.index = 0
+				}
+				this.mPlay()
+			}
+			//上一首
+			mPrev(){
+				this.index--
+				let len = this.songs.length
+				if(this.index < 0 ){
+					this.index = len-1
+				}
+				this.mPlay()
+			}
+			//获取歌曲题目
+			getSongTitle(){
+				let songTitle = ''
+				songTitle = this.songs[this.index].split('/')[2].split('.')[0]
+				return songTitle
+			}
+			//获取当前播放时间
+			/*getSongCurTime(){
+				muc.musicDom.ontimeupdate = function(){
+					if(!this.musicDom) return;
+					let curTime = this.musicDom.currentTime
+					let m = curTime/60|0
+					let s = curTime%60
+					let curT = (m<10? '0'+m : m) + ':' + (s<10 ? '0'+s : s)
+					console.log(curT)
+				}
+			}*/
+		}
+		//居中屏幕
+		let box = $('#box')
+		_center(box)//居中
+		let micon = $('.icon-music')[0]
+		_center(micon)
+
+		let muc = new Music();
+		muc.init()
+		function getSongCurTime(){
+			let curTime = muc.musicDom.currentTime
+			let m = curTime/60|0
+			let s = curTime%60|0
+			let curT = (m<10? '0'+m : m) + ':' + (s<10 ? '0'+s : s)
+			console.log(curT)
+			return curT
+		}
+
+		setInterval(muc.getSongCurTime,1000)
+
+		muc.add('./music/就算我唱遍所有情歌.mp3')
+		muc.add('./music/我如此爱你.mp3')
+		muc.add('./music/在这世界上没有天使.mp3')
+		//muc.mPlay(0)
+
+		
+
+		let play = $('.icon-bofang')[0]
+		let pause = $('.icon-pause')[0]
+		let prev = $('.icon-shangyishou')[0]
+		let next = $('.icon-xiayishou')[0]
+		let mlogo = $('.icon-music')[0]
+		let songtitle = $('.songtitle')[0]
+		let time = $('.time')[0]
+		let bar = $('.bar')[0]
+		let track = $('#track')
+		let trackitem = $('.item',track)[0]
+		console.log(trackitem)
+		
+
+		play.onclick = function(){
+			playOrPause(true)
+			muc.mPlay(muc.index)
+			songtitle.innerHTML = muc.getSongTitle()
+		}
+		pause.onclick = function(){
+			playOrPause(false)
+			muc.mPause()
+		}
+		next.onclick = function(){
+			muc.mNext()
+			playOrPause(true)
+			songtitle.innerHTML = muc.getSongTitle()
+		}
+		prev.onclick = function(){
+			muc.mPrev()
+			playOrPause(true)
+			songtitle.innerHTML = muc.getSongTitle()
+		}
+
+		function playOrPause(status){
+			if(status){
+				play.style.display = 'none'
+				pause.style.display = 'block'
+				mlogo.classList.add('musiclogo')
+			}else{
+				play.style.display = 'block'
+				pause.style.display = 'none'
+				mlogo.classList.remove('musiclogo')
+			}
+		}
+
+		//每次更新时间触发该函数
+		muc.musicDom.ontimeupdate = function(){
+			let curTime = muc.musicDom.currentTime
+			let m = curTime/60|0
+			let s = curTime%60|0
+			let curT = (m<10? '0'+m : m) + ':' + (s<10 ? '0'+s : s)
+			//当前播放时间
+			time.innerHTML = curT
+			console.log(33)
+			//进度条
+			let nowWidthPercent = curTime/muc.musicDom.duration
+			bar.style.width = nowWidthPercent*100 + '%'
+			//音轨条
+			let trackitems = $('.item',track)
+			for(let i=0; i<trackitems.length; i++){
+				trackitems[i].style.height = Math.random()*150 + 'px'
+			}
+
+		}
+		//音轨
+		function createTrack(){
+			let trackWidth = track.clientWidth
+			let trackItemWidth = trackitem.offsetWidth+5
+			let maxNum = (trackWidth/trackItemWidth)|0
+			
+			let html = ''
+			for(let i=0; i<maxNum; i++){
+				html+= `<b class="item" style="left:${ i*trackItemWidth }px;"></b>`
+			}
+			console.log(trackItemWidth)
+			track.innerHTML = html;
+		}
+		createTrack()
+	</script>
+</body>
+</html>

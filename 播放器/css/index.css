@@ -1,0 +1,97 @@
+
+body,p,ul,li,h3{
+	margin:0;
+	padding:
+}
+body{
+	background:#282c34;
+}
+#box {
+	width:200px;
+	height:300px;
+	background:#227499;
+	border-radius:5px;
+	box-shadow: 3px -3px 3px #666;
+}
+.screen{
+	width:96%;
+	height:70%;
+	-background:#ccc;
+	background: linear-gradient(#403d3d,65%,#5f5b5b);
+	margin:2%;
+	position:relative;
+}
+.icon-music{
+	color:#fff;
+	font-size:88px;
+}
+.btns{
+	width:96%;
+	height:26%;
+	-background:wheat;
+	margin:2%;
+	display:flex;
+	justify-content: space-around;
+	align-items: center;
+}
+.btns .iconfont {
+	font-size:45px;
+	color:#fff;
+	cursor:pointer;
+}
+.icon-pause{
+	display: none;
+}
+.songtitle{
+	position: absolute;
+	width:100%;
+	height:25px;
+	z-index:5;
+	text-align: center;
+	color:#fff;
+	font-size: 18px;
+	line-height:25px;
+	margin-top:10px;
+}
+.musiclogo{
+	animation:rotatelogo 5s linear infinite;
+}
+.progress {
+	position: absolute;
+	width:100%;	
+	-background:#bbb;
+	bottom:0;
+}
+.time {
+	height:20px;
+	text-align:right;
+}
+.bar {
+	height:4px;
+	width:0;
+	background: red;
+}
+@keyframes rotatelogo{
+	0%{ transform:rotate(0deg)}
+	100%{ transform:rotate(360deg)}
+}
+
+#track {
+	width:400px;
+	height:200px;
+	position: absolute;
+	left:210px;
+	top:100px;
+	background:#227499;
+	border-radius:5px;
+}
+#track b {
+	width:5px;
+	height:0;
+	margin-left:5px;
+	background:#fff;
+	border-radius:2px 2px 0 0;
+	position: absolute;
+	left:0;
+	bottom:0;
+}
